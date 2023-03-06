@@ -7,13 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/providers/firebase_auth_provider.dart';
 
 import '../services/services.dart';
 import '../utils/utils.dart';
 import '../widgets/auth screen widgets/auth_screen_widgets.dart';
 
-import '../services/settings/routes/routes_constants.dart';
+
 
 class SignUpPage extends ConsumerStatefulWidget {
   // Create a text controller and use it to retrieve the current value of the TextField.

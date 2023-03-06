@@ -15,10 +15,10 @@ class HomePage extends ConsumerWidget {
             leading: IconButton(
           icon: const Icon(Icons.exit_to_app),
           onPressed: () {
+            ref.read(appStateManagerProvider.notifier).isLogout();
+            log('appstatemanager isloggedout');
             ref.read(authenticationProvider).signout();
             log('sign out');
-            ref.read(appStateManagerProvider.notifier).isLoggedIn();
-            log('appstatemanager isloggedout');
           },
         )),
         body: const Center(

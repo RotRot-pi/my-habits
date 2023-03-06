@@ -85,7 +85,7 @@ class PagesRoutes {
           ],
         ),
       ],
-      //TODO:work on redirect
+      //TODO:fix redirect when you sign out
 
       redirect: (context, state) {
         //is he in login page
@@ -95,7 +95,8 @@ class PagesRoutes {
         final isLoggedIn = appState.isLoggedIn;
         final isInSigninPage = state.location == Routes.signUpPagePath;
         final isInLoginPage = state.location == Routes.logInPagePath;
-
+        final isInHomePage= state.location == Routes.homePagePath;
+        final isInOnboardingPage = state.location ==Routes.onboardingPagePath;
         if (isLoggedIn && isInSigninPage) {
           log('authstate:${authState.valueOrNull}');
           log('isloggedin :$isLoggedIn');
@@ -107,8 +108,11 @@ class PagesRoutes {
             return Routes.onboardingPagePath;
           }
         }
-        if (isLoggedIn && isInLoginPage) {
+        if (  isInLoginPage && isLoggedIn||isInOnboardingPage&&isLoggedIn) {
           return Routes.homePagePath;
+        }
+        if(isInHomePage && !isLoggedIn){
+          return Routes.signUpPagePath;
         }
         // // if (!isLoggedIn) {
         //   return !isInSigninPage ? Routes.signUpPagePath : null;

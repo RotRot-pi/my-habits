@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -157,7 +158,7 @@ class EmailTextField extends StatelessWidget {
 }
 
 class PasswordTextField extends StatelessWidget {
-  const PasswordTextField({
+  PasswordTextField({
     Key? key,
     required this.controller,
     required this.hint,
@@ -165,33 +166,61 @@ class PasswordTextField extends StatelessWidget {
 
   final TextEditingController controller;
   final String hint;
+  final ValueNotifier<bool> shows = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         height: 30,
-        child: TextFormField(
-          showCursor: true,
-          cursorColor: ColorPalett.textSecondary3,
-          cursorWidth: 0.8,
-          cursorRadius: const Radius.circular(18),
-          controller: controller,
-          validator: (value) {
-            if (value!.trim().length < 8) {
-              return 'use at least 8 character password';
-            }
-            if (value.trim().length > 20) {
-              return 'use less than 20 character password';
-            }
-            return null;
-          },
-          obscureText: true,
-          decoration: InputDecoration(hintText: hint),
-        ));
+        child: ValueListenableBuilder(
+            valueListenable: shows,
+            builder: (context, valueListenable, child) {
+              return TextFormField(
+                showCursor: true,
+                cursorColor: ColorPalett.textSecondary3,
+                cursorWidth: 0.8,
+                cursorRadius: const Radius.circular(18),
+                controller: controller,
+                validator: (value) {
+                  if (value!.trim().length < 8) {
+                    return 'use at least 8 character password';
+                  }
+                  if (value.trim().length > 20) {
+                    return 'use less than 20 character password';
+                  }
+                  return null;
+                },
+                obscureText: shows.value,
+                decoration: InputDecoration(
+                    hintText: hint,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        if (shows.value == false) {
+                          debugPrint('value:${shows.value}');
+                          shows.value = true;
+                        } else if (shows.value == true) {
+                          debugPrint('value2:${shows.value}');
+                          shows.value = false;
+                        }
+                      },
+                      icon: shows.value
+                          ? const Icon(
+                              Icons.visibility,
+                              color: Colors.black,
+                              size: 16,
+                            )
+                          : const Icon(
+                              Icons.visibility_off,
+                              color: Colors.black,
+                              size: 16,
+                            ),
+                    )),
+              );
+            }));
   }
 }
 
 class ConfirmPasswordTextField extends StatelessWidget {
-  const ConfirmPasswordTextField({
+  ConfirmPasswordTextField({
     Key? key,
     required this.controller,
     required this.hint,
@@ -199,30 +228,50 @@ class ConfirmPasswordTextField extends StatelessWidget {
   }) : super(key: key);
 
   final TextEditingController controller;
-  final password;
+  final TextEditingController password;
   final String hint;
 
+  final ValueNotifier<bool> shows = ValueNotifier<bool>(true);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 30,
-      child: TextFormField(
-        showCursor: true,
-        cursorColor: ColorPalett.textSecondary3,
-        cursorWidth: 0.8,
-        cursorRadius: const Radius.circular(18),
-        controller: controller,
-        validator: (value) {
-          if (value!.trim() != password.text.trim()) {
-            debugPrint('value:$value \npassword:$password');
-            return 'please confirme your password';
-          }
-          return null;
-        },
-        obscureText: true,
-        decoration: InputDecoration(hintText: hint),
-      ),
-    );
+        height: 30,
+        child: ValueListenableBuilder(
+          valueListenable: shows,
+          builder: (context, value, child) {
+            return TextFormField(
+              showCursor: true,
+              cursorColor: ColorPalett.textSecondary3,
+              cursorWidth: 0.8,
+              cursorRadius: const Radius.circular(18),
+              controller: controller,
+              validator: (value) {
+                if (value!.trim() != password.text.trim()) {
+                  debugPrint('value:$value \npassword:$password');
+                  return 'please confirme your password';
+                }
+                return null;
+              },
+              obscureText: shows.value,
+              decoration: InputDecoration(
+                  hintText: hint,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      if (shows.value == false) {
+                        debugPrint('value:${shows.value}');
+                        shows.value = true;
+                      } else if (shows.value == true) {
+                        debugPrint('value2:${shows.value}');
+                        shows.value = false;
+                      }
+                    },
+                    icon: shows.value == true
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off),
+                  )),
+            );
+          },
+        ));
   }
 }
 
