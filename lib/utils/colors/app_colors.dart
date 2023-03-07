@@ -8,6 +8,7 @@ class ColorPalett {
   static const pageSecondary2 = Color(0xFFe2396d);
   static const textPrimary1 = Color(0xFF1a1a1a);
   static const textPrimary2 = Color(0xFF2b0f6a);
+  static const textPrimary3 = Color(0xFF1e0c60);
   static const textSecondary1 = Color(0xFFc4c4c4);
   static const textSecondary2 = Color(0xFFffffff);
   static const textSecondary3 = Color(0xFF8576bb);

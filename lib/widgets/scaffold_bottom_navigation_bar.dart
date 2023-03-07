@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_habits/services/settings/routes/routes_constants.dart';
+import 'package:my_habits/utils/colors/app_colors.dart';
 import 'package:my_habits/widgets/icons.dart';
 
-final bottomNavIndexProvider = StateProvider((_) => 0);
+final bottomNavIndexProvider = StateProvider((ref) => 0);
 
 final tabs = [
   const ScaffoldWithNavBarTabItem(
@@ -63,12 +64,16 @@ class ScaffoldWithBottomNavBar extends ConsumerWidget {
     }
 
     return Scaffold(
+      
       body: child,
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: ColorPalett.textPrimary2,
+        unselectedItemColor: ColorPalett.textSecondary3,
         currentIndex: currentIndex,
         items: tabs,
         onTap: onItemTapped,
       ),
+      backgroundColor: ColorPalett.pagePrimary1,
     );
   }
 }

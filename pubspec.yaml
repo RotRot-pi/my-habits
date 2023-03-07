@@ -37,6 +37,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heatmap_calendar: ^1.0.5
+  flutter_inset_box_shadow: ^1.0.8
   flutter_native_splash: ^2.2.17
   flutter_riverpod: ^2.1.3
   go_router: ^6.0.1

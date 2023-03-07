@@ -157,6 +157,34 @@ class EmailTextField extends StatelessWidget {
   }
 }
 
+class CustomValueListenableBuilder<A, B> extends StatelessWidget {
+  const CustomValueListenableBuilder({
+    required this.first,
+    required this.second,
+    Key? key,
+    required this.builder,
+    this.child,
+  }) : super(key: key);
+
+  final ValueListenable<A> first;
+  final ValueListenable<B> second;
+  final Widget? child;
+  final Widget Function(BuildContext context, A a, B b, Widget? child) builder;
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder<A>(
+        valueListenable: first,
+        builder: (_, a, __) {
+          return ValueListenableBuilder<B>(
+            valueListenable: second,
+            builder: (context, b, __) {
+              return builder(context, a, b, child);
+            },
+          );
+        },
+      );
+}
+
 class PasswordTextField extends StatelessWidget {
   PasswordTextField({
     Key? key,
@@ -166,14 +194,16 @@ class PasswordTextField extends StatelessWidget {
 
   final TextEditingController controller;
   final String hint;
-  final ValueNotifier<bool> shows = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> showPassword = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> showIcon = ValueNotifier<bool>(false);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         height: 30,
-        child: ValueListenableBuilder(
-            valueListenable: shows,
-            builder: (context, valueListenable, child) {
+        child: CustomValueListenableBuilder(
+            first: showIcon,
+            second: showPassword,
+            builder: (context, valueListenable1, valueListenable2, child) {
               return TextFormField(
                 showCursor: true,
                 cursorColor: ColorPalett.textSecondary3,
@@ -189,20 +219,26 @@ class PasswordTextField extends StatelessWidget {
                   }
                   return null;
                 },
-                obscureText: shows.value,
+                obscureText: showPassword.value,
                 decoration: InputDecoration(
                     hintText: hint,
                     suffixIcon: IconButton(
                       onPressed: () {
-                        if (shows.value == false) {
-                          debugPrint('value:${shows.value}');
-                          shows.value = true;
-                        } else if (shows.value == true) {
-                          debugPrint('value2:${shows.value}');
-                          shows.value = false;
+                        if (showPassword.value == false) {
+                          debugPrint(
+                              'showPassword.value:${showPassword.value}');
+                          debugPrint('showIcon.value:${showIcon.value}');
+                          showPassword.value = true;
+                          showIcon.value = false;
+                        } else if (showPassword.value == true) {
+                          debugPrint(
+                              'showPassword.value2:${showPassword.value}');
+                          debugPrint('showIcon.value2:${showIcon.value}');
+                          showPassword.value = false;
+                          showIcon.value = true;
                         }
                       },
-                      icon: shows.value
+                      icon: showIcon.value
                           ? const Icon(
                               Icons.visibility,
                               color: Colors.black,
@@ -231,14 +267,16 @@ class ConfirmPasswordTextField extends StatelessWidget {
   final TextEditingController password;
   final String hint;
 
-  final ValueNotifier<bool> shows = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> showPassword = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> showIcon = ValueNotifier<bool>(false);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         height: 30,
-        child: ValueListenableBuilder(
-          valueListenable: shows,
-          builder: (context, value, child) {
+        child: CustomValueListenableBuilder(
+          first: showPassword,
+          second: showIcon,
+          builder: (context, valueListenable1, valueListenable2, child) {
             return TextFormField(
               showCursor: true,
               cursorColor: ColorPalett.textSecondary3,
@@ -252,22 +290,32 @@ class ConfirmPasswordTextField extends StatelessWidget {
                 }
                 return null;
               },
-              obscureText: shows.value,
+              obscureText: showPassword.value,
               decoration: InputDecoration(
                   hintText: hint,
                   suffixIcon: IconButton(
                     onPressed: () {
-                      if (shows.value == false) {
-                        debugPrint('value:${shows.value}');
-                        shows.value = true;
-                      } else if (shows.value == true) {
-                        debugPrint('value2:${shows.value}');
-                        shows.value = false;
+                      if (showPassword.value == false) {
+                        debugPrint('value:${showPassword.value}');
+                        showPassword.value = true;
+                        showIcon.value = false;
+                      } else if (showPassword.value == true) {
+                        debugPrint('value2:${showPassword.value}');
+                        showPassword.value = false;
+                        showIcon.value = true;
                       }
                     },
-                    icon: shows.value == true
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
+                    icon: showIcon.value
+                        ? const Icon(
+                            Icons.visibility,
+                            color: Colors.black,
+                            size: 16,
+                          )
+                        : const Icon(
+                            Icons.visibility_off,
+                            color: Colors.black,
+                            size: 16,
+                          ),
                   )),
             );
           },

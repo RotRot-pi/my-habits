@@ -9,7 +9,6 @@ import 'package:my_habits/utils/colors/app_colors.dart';
 
 import 'firebase_options.dart';
 
-
 main() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -57,7 +56,8 @@ class MyHabits extends ConsumerWidget {
                 horizontal: 16,
               ))),
       debugShowMaterialGrid: false,
-      routerConfig: PagesRoutes.routePages(navigatorKey, shellKey, authState,appState),
+      routerConfig:
+          PagesRoutes.routePages(navigatorKey, shellKey, authState, appState),
     );
   }
 }

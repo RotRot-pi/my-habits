@@ -10,7 +10,7 @@ import 'package:my_habits/utils/themes/text_theme.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingPage extends ConsumerWidget {
-  final controller = PageController();
+  final controller = PageController(initialPage: 0);
 
   OnboardingPage({super.key});
 
@@ -90,6 +90,9 @@ class OnboardingPage extends ConsumerWidget {
   Widget buildPages() {
     return PageView(
       controller: controller,
+      onPageChanged: (index){
+        
+      },
       children: [
         onboardPageView(
             const AssetImage('assets/images/image1.png'),
